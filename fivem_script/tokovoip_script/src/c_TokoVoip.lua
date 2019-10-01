@@ -104,7 +104,10 @@ function TokoVoip.initialize(self)
 	Citizen.CreateThread(function()
 		while (true) do
 			Citizen.Wait(5);
-
+			RequestAnimDict("random@arrests");
+			while not HasAnimDictLoaded("random@arrests") do
+				Wait(0);
+			end
 			if ((self.keySwitchChannelsSecondary and IsControlPressed(0, self.keySwitchChannelsSecondary)) or not self.keySwitchChannelsSecondary) then -- Switch radio channels
 				if (IsControlJustPressed(0, self.keySwitchChannels) and tablelength(self.myChannels) > 0) then
 					local myChannels = {};
@@ -152,20 +155,19 @@ function TokoVoip.initialize(self)
 				self:updateTokoVoipInfo();
 				if (lastTalkState == false and self.myChannels[self.plugin_data.radioChannel]) then
 					if (not string.match(self.myChannels[self.plugin_data.radioChannel].name, "Call") and not IsPedSittingInAnyVehicle(PlayerPedId())) then
-						RequestAnimDict("random@arrests");
-						while not HasAnimDictLoaded("random@arrests") do
-							Wait(5);
-						end
 						TaskPlayAnim(PlayerPedId(),"random@arrests","generic_radio_chatter", 8.0, 0.0, -1, 49, 0, 0, 0, 0);
 					end
 					lastTalkState = true
 				end
 			else
-				self.plugin_data.radioTalking = false;
+				if self.plugin_data.radioTalking then
+					self.plugin_data.radioTalking = false;
+					self:updateTokoVoipInfo();
+				end
+			
 				if (getPlayerData(self.serverId, "radio:talking")) then
 					setPlayerData(self.serverId, "radio:talking", false, true);
 				end
-				self:updateTokoVoipInfo();
 				
 				if lastTalkState == true then
 					lastTalkState = false
