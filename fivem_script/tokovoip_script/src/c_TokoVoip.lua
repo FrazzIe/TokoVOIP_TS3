@@ -16,7 +16,6 @@
 
 TokoVoip = {};
 TokoVoip.__index = TokoVoip;
-local lastTalkState = false
 
 function TokoVoip.init(self, config)
 	local self = setmetatable(config, TokoVoip);
@@ -143,22 +142,23 @@ function TokoVoip.initialize(self)
 			end
 
 
-			if (IsControlPressed(0, self.radioKey) and self.plugin_data.radioChannel ~= -1) then -- Talk on radio
-				self.plugin_data.radioTalking = true;
+			if (IsControlPressed(0, self.radioKey) and self.plugin_data.radioChannel ~= -1 and exports["rp-radio"]:CanRadioBeUsed() and (exports["rp-radio"]:IsRadioOpen() or (exports["policejob"]:getIsInService() or exports["emsjob"]:getIsInService()))) then -- Talk on radio
+				if not self.plugin_data.radioTalking then
+					self.plugin_data.radioTalking = true;
+					self:updateTokoVoipInfo();
+				end
+
 				self.plugin_data.localRadioClicks = true;
+
 				if (self.plugin_data.radioChannel > 100) then
 					self.plugin_data.localRadioClicks = false;
 				end
+
 				if (not getPlayerData(self.serverId, "radio:talking")) then
 					setPlayerData(self.serverId, "radio:talking", true, true);
 				end
+
 				self:updateTokoVoipInfo();
-				if (lastTalkState == false and self.myChannels[self.plugin_data.radioChannel]) then
-					if (not string.match(self.myChannels[self.plugin_data.radioChannel].name, "Call") and not IsPedSittingInAnyVehicle(PlayerPedId())) then
-						TaskPlayAnim(PlayerPedId(),"random@arrests","generic_radio_chatter", 8.0, 0.0, -1, 49, 0, 0, 0, 0);
-					end
-					lastTalkState = true
-				end
 			else
 				if self.plugin_data.radioTalking then
 					self.plugin_data.radioTalking = false;
@@ -167,11 +167,6 @@ function TokoVoip.initialize(self)
 			
 				if (getPlayerData(self.serverId, "radio:talking")) then
 					setPlayerData(self.serverId, "radio:talking", false, true);
-				end
-				
-				if lastTalkState == true then
-					lastTalkState = false
-					StopAnimTask(PlayerPedId(), "random@arrests","generic_radio_chatter", -4.0);
 				end
 			end
 
