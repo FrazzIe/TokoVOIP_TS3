@@ -44,7 +44,7 @@ TokoVoipConfig = {
 		remote_click_off = false, -- Is remote click off sound active
 		enableStereoAudio = false, -- If set to true, positional audio will be stereo (you can hear people more on the left or the right around you)
 
-		localName = "Frazzle.", -- If set, this name will be used as the user's teamspeak display name
+		localName = "Roleplayer", -- If set, this name will be used as the user's teamspeak display name
 		localNamePrefix = "[" .. GetPlayerServerId(PlayerId()) .. "] ", -- If set, this prefix will be added to the user's teamspeak display name
 	}
 };
