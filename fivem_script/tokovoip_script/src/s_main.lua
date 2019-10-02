@@ -21,7 +21,7 @@ function addPlayerToRadio(channelId)
 	local playerServerId = source
 
 	if (not channels[channelId]) then
-		channels[channelId] = {id = channelId, name = "Call with " .. channelId, subscribers = {}};
+		channels[channelId] = {id = channelId, name = channelId .." MHz", subscribers = {}};
 	end
 	if (not channels[channelId].id) then
 		channels[channelId].id = channelId;
