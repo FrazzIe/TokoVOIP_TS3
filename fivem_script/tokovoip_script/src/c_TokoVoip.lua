@@ -150,7 +150,7 @@ function TokoVoip.initialize(self)
 
 				self.plugin_data.localRadioClicks = true;
 
-				if (self.plugin_data.radioChannel > 100) then
+				if (self.plugin_data.radioChannel > 1000) then
 					self.plugin_data.localRadioClicks = false;
 				end
 
