@@ -219,7 +219,7 @@ function clientProcessing()
 
 				for _, channel in pairs(voip.myChannels) do
 					if (channel.subscribers[voip.serverId] and channel.subscribers[playerServerId] and voip.myChannels[remotePlayerChannel] and remotePlayerUsingRadio and voip.plugin_data.radioChannel == remotePlayerChannel) then
-						if (remotePlayerChannel <= 100) then
+						if (remotePlayerChannel <= 1000) then
 							usersdata[userIndex].radioEffect = true;
 						end
 						usersdata[userIndex].volume = 0;
